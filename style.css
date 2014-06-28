@@ -1,0 +1,25 @@
+section
+{
+    display: block;
+    width: 30%;
+}
+form > div
+{
+    float: right;
+}
+table
+{
+    width: 100%;
+    height: auto;
+    margin-top: 50px;
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+thead
+{
+    background-color: #cccccc;
+}
+td, th
+{
+    border: 1px solid gray;
+}
