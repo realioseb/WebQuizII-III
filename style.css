@@ -7,6 +7,10 @@ form > div
 {
     float: right;
 }
+form textarea
+{
+    width: 100%;
+}
 table
 {
     width: 100%;

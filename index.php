@@ -10,7 +10,7 @@
                 <fieldset> 
                     <legend>Add note</legend> 
                     <div> 
-                        <textarea name="note" cols="43" rows="4"></textarea> 
+                        <textarea name="note" cols="12" rows="4"></textarea> 
                     </div> 
                 </fieldset> 
                 <div> 
@@ -26,18 +26,29 @@
                     <th>Delete</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>a</td>
-                        <td>b</td>
-                        <td>c</td>
-                        <td>d</td>
-                    </tr>
-                    <tr>
-                        <td>a1</td>
-                        <td>b1</td>
-                        <td>c1</td>
-                        <td>d1</td>
-                    </tr>
+                    <?php
+                        $db = new PDO('mysql:host=localhost;dbname=notes', "root", "");
+
+                        $select = $db->prepare("SELECT * FROM notes");
+                        $select->execute();
+
+                        $notes = $select->fetchAll();
+                        $length = count($notes);
+
+                        $result = "";
+
+                        for($i = 1; $i <= $length; $i++) {
+                            $j = $length-$i;
+                            $result .= "<tr>";
+                            $result .= "<td> note " . ($j+1) . " </td>";
+                            $result .= "<td>" . $notes[$j]['id'] . "</td>";
+                            $result .= "<td>" . $notes[$j]['date'] . "</td>";
+                            $result .= "<td><a href='#'>delete</td>";
+                            $result .= "</tr>";
+                        }
+                        
+                        echo $result;
+                    ?>
                 </tbody>
             </table>
         </section>
