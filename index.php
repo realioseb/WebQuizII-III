@@ -37,16 +37,13 @@
 
                         $result = "";
 
-                        for($i = 1; $i <= $length; $i++) {
-                            $j = $length-$i;
-                            $id = $notes[$j]['id'];
-                            
+                        foreach ($notes as $note) {
                             $result .= "<tr>";
                             
-                            $result .= "<td>" . $notes[$j]['note'] . "</td>";
-                            $result .= "<td>" . $id . "</td>";
-                            $result .= "<td>" . $notes[$j]['date'] . "</td>";
-                            $result .= "<td><input type='checkbox' value='" . $id . "'></td>";
+                            $result .= "<td>" . $note['note'] . "</td>";
+                            $result .= "<td>" . $note['id'] . "</td>";
+                            $result .= "<td>" . $note['date'] . "</td>";
+                            $result .= "<td><input type='checkbox' value='" . $note['id'] . "'></td>";
                             
                             $result .= "</tr>";
                         }

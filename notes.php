@@ -1,7 +1,7 @@
 <?php
 $db = new PDO('mysql:host=localhost;dbname=notes', "root", "");
 
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
+if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['note'])) {
     $note[] = $_POST['note'];
     
     $insert = $db->prepare("INSERT INTO notes (note) VALUES (?)");
@@ -16,7 +16,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         header('HTTP/1.1 201 Created', true, 201);
         header('Content-Type: application/json');
-        echo json_encode($stat);
+        echo json_encode($stat, JSON_HEX_TAG);
     } else {
         $stat = array(
             'status' => array(
@@ -25,6 +25,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
         
         header('HTTP/1.1 400 Bad Request', true, 400);
+        header('Content-Type: application/json');
         echo json_encode($stat);
     }
 } elseif($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -46,4 +47,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     echo json_encode($result);
+} else {
+    $stat = array(
+        'status' => array(
+            'message' => 'Unable to create note'
+        )
+    );
+
+    header('HTTP/1.1 400 Bad Request', true, 400);
+    header('Content-Type: application/json');
+    echo json_encode($stat);
 }
