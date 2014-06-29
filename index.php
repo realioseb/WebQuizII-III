@@ -5,7 +5,7 @@
         <link href="style.css" rel="stylesheet">
     </head>
     <body>
-        <section>
+        <section id="content">
             <form method="post" action="notes.php"> 
                 <fieldset> 
                     <legend>Add note</legend> 
@@ -23,7 +23,7 @@
                     <th>Note</th>
                     <th>ID</th>
                     <th>Date</th>
-                    <th>Delete</th>
+                    <th><a href='delete.php'>Del</a></th>
                 </thead>
                 <tbody>
                     <?php
@@ -39,11 +39,15 @@
 
                         for($i = 1; $i <= $length; $i++) {
                             $j = $length-$i;
+                            $id = $notes[$j]['id'];
+                            
                             $result .= "<tr>";
-                            $result .= "<td> note " . ($j+1) . " </td>";
-                            $result .= "<td>" . $notes[$j]['id'] . "</td>";
+                            
+                            $result .= "<td>" . $notes[$j]['note'] . "</td>";
+                            $result .= "<td>" . $id . "</td>";
                             $result .= "<td>" . $notes[$j]['date'] . "</td>";
-                            $result .= "<td><a href='#'>delete</td>";
+                            $result .= "<td><input type='checkbox' value='" . $id . "'></td>";
+                            
                             $result .= "</tr>";
                         }
                         
@@ -52,5 +56,9 @@
                 </tbody>
             </table>
         </section>
+        <section id="msg">
+            
+        </section>
+        <script src="js.js"></script>
     </body>
 </html>

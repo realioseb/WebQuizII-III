@@ -1,20 +1,49 @@
 <?php
+$db = new PDO('mysql:host=localhost;dbname=notes', "root", "");
 
-if(isset($_POST['note'])) {
-    $note[] = (string)$_POST['note'];
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $note[] = $_POST['note'];
     
-    $db = new PDO('mysql:host=localhost;dbname=notes', "root", "");
-    
-    $select = $db->prepare("INSERT INTO notes (note) VALUES (?)");
-    $select->execute($note);
-    
-    if($select->rowCount() != 0) {
-        //do something useful
-        echo "recorded";
+    $insert = $db->prepare("INSERT INTO notes (note) VALUES (?)");
+    $insert->execute($note);
+
+    if($insert->rowCount() != 0) {
+        $stat = array(
+            'status' => array(
+                'message' => 'Note was created succesfully...'
+            )
+        );
+        
+        header('HTTP/1.1 201 Created', true, 201);
+        header('Content-Type: application/json');
+        echo json_encode($stat);
     } else {
-        //meeh...
-        echo "Unable to create note…";
+        $stat = array(
+            'status' => array(
+                'message' => 'Unable to create note'
+            )
+        );
+        
+        header('HTTP/1.1 400 Bad Request', true, 400);
+        echo json_encode($stat);
     }
-} else {
-    echo "there's nothing to show";
+} elseif($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $select = $db->prepare("SELECT * FROM notes");
+    $select->execute();
+    
+    $notes = $select->fetchAll();
+    
+    $length = count($notes);
+
+    $result = array();
+
+    foreach($notes as $key => $note) {
+        $result[] = array();
+        
+        $result[$key]['id'] = $note['id'];
+        $result[$key]['note'] = $note['note'];
+        $result[$key]['date'] = $note['date'];
+    }
+    
+    echo json_encode($result);
 }

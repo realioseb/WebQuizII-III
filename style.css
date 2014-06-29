@@ -1,7 +1,7 @@
-section
+#content
 {
     display: block;
-    width: 30%;
+    width: 50%;
 }
 form > div
 {
@@ -26,4 +26,11 @@ thead
 td, th
 {
     border: 1px solid gray;
+}
+#msg
+{
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 20px;
 }
