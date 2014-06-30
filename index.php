@@ -23,7 +23,7 @@
                     <th>Note</th>
                     <th>ID</th>
                     <th>Date</th>
-                    <th><a href='delete.php'>Del</a></th>
+                    <th><a href='delete.php'>Delete?</a></th>
                 </thead>
                 <tbody>
                     <?php
@@ -52,9 +52,6 @@
                     ?>
                 </tbody>
             </table>
-        </section>
-        <section id="msg">
-            
         </section>
         <script src="js.js"></script>
     </body>

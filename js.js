@@ -1,6 +1,7 @@
 var button = document.getElementsByName("save")[0];
-
 button.onclick = function() {
+    event.preventDefault();
+    
     var note = document.getElementsByName("note")[0];
     var url = document.getElementsByTagName("form")[0].action;
     
@@ -13,7 +14,7 @@ button.onclick = function() {
         var postResp = JSON.parse(client.response);
         
         if(client.readyState === 4 && client.status === 201) {
-            document.getElementById("msg").innerHTML = postResp.status.message;
+            alert(postResp.status.message);
             
             var xmlhttp = (new XMLHttpRequest) || (new ActiveXObject);
             
@@ -35,15 +36,13 @@ button.onclick = function() {
             
             xmlhttp.send();
         } else if(client.readyState === 4 && client.status === 400) {
-            document.getElementById("msg").innerHTML = postResp.status.message;
+            alert(postResp.status.message);
         }
     };
     
     client.send("note=" + note.value);
     
     note.value = "";
-    
-    return false;
 };
 
 function drawTableBody(jsonArray) {
@@ -73,3 +72,46 @@ function drawTableBody(jsonArray) {
     
     return tbody;
 }
+
+var del = document.getElementsByTagName("a")[0];
+del.onclick = function() {
+    event.preventDefault();
+    
+    var list = document.getElementsByTagName("tbody")[0].children;
+    
+    var len = list.length;
+    
+    var deletable = [];
+    
+    for(var i = 0; i < len; i++) {
+        if(list[i].lastChild.firstChild.checked) {
+            deletable.push(list[i].children[1].innerHTML);
+        }
+    }
+    
+    if(confirm("Are you sure you want delete all selected notes?")) {
+        var client = (new XMLHttpRequest) || (new ActiveXObject);
+
+        var url = this.href;
+        client.open("POST", url, true);
+
+        client.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        client.onreadystatechange = function() {
+            if(client.readyState === 4) {
+                for(var i = 1; i <= len; i++) {
+                    var j = len-i;
+                    
+                    if(list[j].lastChild.firstChild.checked) {
+                        list[j].parentNode.removeChild(list[j]);
+                    }
+                }
+                
+                var msg = JSON.parse(client.response);
+                alert(msg.status.message);
+            }
+        };
+        
+        client.send("del=" + encodeURIComponent(JSON.stringify(deletable)));
+    }
+};
